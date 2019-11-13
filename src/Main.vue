@@ -1,21 +1,28 @@
 <template>
     <div>
-
-        <RadioButtonsList
-                :name="'inputType'"
-                :PossibleValues="[1, 2, 3]"
-                :selectedValue.sync="inputType"
-        ></RadioButtonsList>
-        <RadioButtonsList
-                :name="'outputType'"
-                :PossibleValues="[1, 2, 3]"
-                :selectedValue.sync="outputType"
-        ></RadioButtonsList>
+        <form>
+            <div class="form-control">
+                <RadioButtonsList
+                        :label="'Исходное тип'"
+                        :name="'inputType'"
+                        :PossibleValues="possibleValues"
+                        :value.sync="inputType"
+                ></RadioButtonsList>
+            </div>
+            <div class="form-control">
+                <RadioButtonsList
+                        :label="'Желаемый тип'"
+                        :name="'outputType'"
+                        :PossibleValues="possibleValues"
+                        :value.sync="outputType"
+                ></RadioButtonsList>
+            </div>
+        </form>
     </div>
 </template>
 
 <script lang="ts">
-    import RadioButtonsList from "./RadioButtonsField.vue";
+    import RadioButtonsList from "./RadioButtonsField/RadioButtonsField.vue";
     import {Component, Vue} from 'vue-property-decorator';
 
     @Component({
