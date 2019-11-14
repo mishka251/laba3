@@ -37,9 +37,10 @@
                         :helpText="'Введите число'"
                         :max="100"
                 ></SimpleNumberInput>
-                <button class="btn btn-primary" type="submit" @click="onSubmit">Отправить</button>
 
-                <span v-if="output_value">Ваш результат{{output_value}}</span>
+                <div v-if="output_value!==null">Ваш результат = {{output_value}}</div>
+
+                <button class="btn btn-primary" type="submit" @click="onSubmit">Отправить</button>
             </form>
         </ValidationObserver>
 

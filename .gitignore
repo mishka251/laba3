@@ -1,2 +1,6 @@
 
 /venv/
+/node_modules/
+/static/bundle.js
+/static/bundle.js.map
+/.idea/
