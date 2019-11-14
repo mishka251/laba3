@@ -12,7 +12,8 @@
                         v-model.number="_value"
                         :class="{...classes, 'form-control':true}"
                 >
-                <span class="invalid-feedback" v-for="error in errors">{{error}}</span>
+                  <small class="form-text text-muted">{{helpText}}</small>
+                <span class="invalid-tooltip" v-for="error in errors">{{ error }}</span>
             </label>
 
 
@@ -21,6 +22,9 @@
     </ValidationProvider>
 </template>
 
-<script lang="ts" src="../BaseComponents/BaseNumberInput.ts"></script>
+<script lang="ts" >
+    import Input from "../BaseComponents/BaseNumberInput";
+    export default Input;
+</script>
 
 <!--<style scoped></style>-->

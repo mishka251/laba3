@@ -1,5 +1,6 @@
 var path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+var webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.ts',
@@ -12,7 +13,7 @@ module.exports = {
                 loader: 'ts-loader',
                 //exclude: /node_modules/,
                 options: {
-                   appendTsSuffixTo: [/\.vue$/],
+                    appendTsSuffixTo: [/\.vue$/],
 
                 }
             },
@@ -26,22 +27,22 @@ module.exports = {
                     esModule: true
                 }
             },
-             //sass
-  {
-    test: /\.scss$/,
-    loaders: [
-      'style-loader',
-      'css-loader',
-      'resolve-url-loader',
-      {
-        loader: 'sass-loader?indentedSyntax=false',
-        options: {
-          sourceMap: true
-        },
-      },
-    ],
-  },
- // { test: /\.css$/, loader: "style-loader!css-loader?root=." }
+            //sass
+            {
+                test: /\.scss$/,
+                loaders: [
+                    'style-loader',
+                    'css-loader',
+                    'resolve-url-loader',
+                    {
+                        loader: 'sass-loader?indentedSyntax=false',
+                        options: {
+                            sourceMap: true
+                        },
+                    },
+                ],
+            },
+            // { test: /\.css$/, loader: "style-loader!css-loader?root=." }
         ],
         // loaders: [
         //         { test: /\.vue$/, loader: "vue" }
@@ -56,6 +57,12 @@ module.exports = {
     },
     plugins: [
         // убедитесь что подключили плагин!
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery',
+            Popper: ['popper.js', 'default'],
+        })
     ]
 };

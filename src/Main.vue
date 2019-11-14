@@ -1,43 +1,111 @@
 <template>
-    <div>
-        <form>
-            <div class="form-control">
-                <RadioButtonsList
-                        :label="'Исходное тип'"
-                        :name="'inputType'"
-                        :PossibleValues="possibleValues"
-                        :value.sync="inputType"
-                ></RadioButtonsList>
-            </div>
-            <div class="form-control">
-                <RadioButtonsList
-                        :label="'Желаемый тип'"
-                        :name="'outputType'"
-                        :PossibleValues="possibleValues"
-                        :value.sync="outputType"
-                ></RadioButtonsList>
-            </div>
-        </form>
+    <div class="w-100 h-100">
+
+        <ValidationObserver
+                ref="observer"
+                v-slot="{ valid }"
+                :tag="'div'"
+        >
+            <form class="">
+                <div class="form-group">
+                    <RadioButtonsList
+                            :label="'Исходное тип'"
+                            :name="'input_type'"
+                            :isRequired="true"
+                            :PossibleValues="possible_values"
+                            :value.sync="input_type"
+                            :helpText="'Выберите одно из значений'"
+                    ></RadioButtonsList>
+
+
+                    <RadioButtonsList
+                            :label="'Желаемый тип'"
+                            :name="'output_type'"
+                            :isRequired="true"
+                            :PossibleValues="possible_values"
+                            :value.sync="output_type"
+                            :helpText="'Выберите одно из значений'"
+                    ></RadioButtonsList>
+                </div>
+
+
+                <SimpleNumberInput
+                        :label="'Входное значение'"
+                        :name="'input_value'"
+                        :isRequired="true"
+                        :value.sync="input_value"
+                        :helpText="'Введите число'"
+                        :max="100"
+                ></SimpleNumberInput>
+                <button class="btn btn-primary" type="submit" @click="onSubmit">Отправить</button>
+
+                <span v-if="output_value">Ваш результат{{output_value}}</span>
+            </form>
+        </ValidationObserver>
+
     </div>
 </template>
 
 <script lang="ts">
     import RadioButtonsList from "./RadioButtonsField/RadioButtonsField.vue";
-    import {Component, Vue} from 'vue-property-decorator';
+    import {Component, Prop, Vue} from 'vue-property-decorator';
 
+    import SimpleNumberInput from "./SimpleNumberInput/SimpleNumberInput.vue";
+
+    import axios from 'axios';
+
+    let $ = require('jquery');
+
+    let url = 'calc/';
     @Component({
-        components: {RadioButtonsList}
+        components: {RadioButtonsList, SimpleNumberInput}
     })
     export default class Main extends Vue {
         //name: "Main"
-        inputType: string = "";
-        outputType: string = "";
-        possibleValues: string[] = [];
+        input_type: string | null = null;
+        output_type: string | null = null;
+        possible_values: string[] = [];
+        input_value: number = 0;
+        output_value: number | null = null;
 
         mounted() {
-            this.possibleValues = ['Грамм', "Килограмм"];
-            //TODO взять с сервера ч-з data в шаблоне
+            let possible_values: string = $('#possible-values').data('possible-values');
+            possible_values = possible_values.replace(/'/g, '"');
+            this.possible_values = JSON.parse(possible_values);
         }
+
+        async onSubmit(event: Event) {
+            event.preventDefault();
+            //@ts-ignore
+            const isValid = await (this.$refs.observer).validate();
+            if (!isValid) {
+                console.log('invalid');
+                return;
+            }
+
+
+            let data = {
+                'input_type': this.input_type,
+                'output_type': this.output_type,
+                'input_value': this.input_value
+            };
+
+            let processResponse = (response: any) => {
+                console.log(response);
+                if (response.data.valid) {
+                    console.log('All ok');
+                    this.output_value = response.data.output_value;
+
+                } else {
+                    console.log('oops');
+                    //@ts-ignore
+                    this.$refs.observer.setErrors(response.data.errors);
+                }
+            };
+            axios.get(url, {params: data}).then(processResponse).catch((error) => console.log('error   ' + error));
+
+        }
+
     }
 </script>
 
