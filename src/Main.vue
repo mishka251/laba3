@@ -61,19 +61,19 @@
     @Component({
         components: {RadioButtonsList, SimpleNumberInput}
     })
-    export default class Main extends Vue {
+    export default class VueMain extends Vue {
         //name: "Main"
         input_type: string | null = null;
         output_type: string | null = null;
-        possible_values: string[] = [];
+        @Prop({required: true}) possible_values: any;
         input_value: number = 0;
         output_value: number | null = null;
 
-        mounted() {
-            let possible_values: string = $('#possible-values').data('possible-values');
-            possible_values = possible_values.replace(/'/g, '"');
-            this.possible_values = JSON.parse(possible_values);
-        }
+        // mounted() {
+        //     let possible_values: string = $('#possible-values').data('possible-values');
+        //     possible_values = possible_values.replace(/'/g, '"');
+        //     this.possible_values = JSON.parse(possible_values);
+        // }
 
         async onSubmit(event: Event) {
             event.preventDefault();

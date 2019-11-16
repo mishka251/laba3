@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 import {ValidationProvider, ValidationObserver} from 'vee-validate';
 import {configure} from 'vee-validate';
-import MainPage from "./Main.vue";
+import VueMain from "./Main.vue";
 
 require('./style.scss');
 require('bootstrap');
@@ -17,15 +17,21 @@ window.onload = function () {
     });
 
 
-
     Vue.component('ValidationProvider', ValidationProvider);
     Vue.component('ValidationObserver', ValidationObserver);
 
-    let vue_app = new Vue({
+    new Vue({
         el: '#vue-app',
-        render: h => h(MainPage),
+        render: function (h) {
+            return h(VueMain, {
+                props: {
+                    //@ts-ignore
+                    possible_values: JSON.parse(this.$el.attributes.possible_values.value.replace(/'/g, '"'))
+                }
+            })
+        },
         components: {
-            MainPage
+            VueMain
         },
     });
 };
