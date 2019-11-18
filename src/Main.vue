@@ -38,10 +38,34 @@
                         :max="100"
                 ></SimpleNumberInput>
 
-                <div v-if="output_value!==null">Ваш результат = {{output_value}}</div>
+                <div class="result" v-if="output_value!==null">Ваш результат = {{output_value}}</div>
 
                 <button class="btn btn-primary" type="submit" @click="onSubmit">Отправить</button>
             </form>
+            <div class="images d-flex flex-row flex justify-content-between">
+                <div class="left-image">
+                    <ImageBox
+                            :src="cat_image_left_path"
+                            :alt="cat_image_alt"
+                            :width="cat_image_w"
+                            :height="cat_image_h"
+                            :id="'cat1'"
+                            :label="'Котики везде'"
+
+                    ></ImageBox>
+                </div>
+                <div class="right-image">
+                    <ImageBox
+                            :src="cat_image_right_path"
+                            :alt="cat_image_alt"
+                            :width="cat_image_w"
+                            :height="cat_image_h"
+                            :id="'cat1'"
+                            :label="'Котики везде'"
+                    ></ImageBox>
+                </div>
+            </div>
+
         </ValidationObserver>
 
     </div>
@@ -53,13 +77,15 @@
 
     import SimpleNumberInput from "./SimpleNumberInput/SimpleNumberInput.vue";
 
+    import ImageBox from "./ImageBox/ImageBox.vue";
+
     import axios from 'axios';
 
     let $ = require('jquery');
 
     let url = 'calc/';
     @Component({
-        components: {RadioButtonsList, SimpleNumberInput}
+        components: {RadioButtonsList, SimpleNumberInput, ImageBox}
     })
     export default class VueMain extends Vue {
         //name: "Main"
@@ -69,6 +95,12 @@
         input_value: number = 0;
         output_value: number | null = null;
 
+        @Prop({type:String, required:true})        cat_image_left_path!: string ;
+        @Prop({type:String, required:true})        cat_image_right_path!: string ;
+        cat_image_alt: string = "Картинка с котиком";
+        scale=0.75;
+        cat_image_w:number=this.scale*398;
+        cat_image_h:number=this.scale*486;
         // mounted() {
         //     let possible_values: string = $('#possible-values').data('possible-values');
         //     possible_values = possible_values.replace(/'/g, '"');

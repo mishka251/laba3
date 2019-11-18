@@ -26,7 +26,11 @@ window.onload = function () {
             return h(VueMain, {
                 props: {
                     //@ts-ignore
-                    possible_values: JSON.parse(this.$el.attributes.possible_values.value.replace(/'/g, '"'))
+                    possible_values: JSON.parse(this.$el.attributes.possible_values.value.replace(/'/g, '"')),
+                    //@ts-ignore
+                    cat_image_right_path: this.$el.attributes.image_path_right.value,
+                    //@ts-ignore
+                    cat_image_left_path: this.$el.attributes.image_path_left.value,
                 }
             })
         },

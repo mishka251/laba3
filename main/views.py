@@ -4,11 +4,11 @@ from django.shortcuts import render
 # Create your views here.
 from django.template.response import TemplateResponse
 
-
 enabled_types = ['Тонна', 'Килограмм', 'Грамм', 'Милиграмм', 'Фунт']
 
+
 def index(request):
-    return TemplateResponse(request, 'index.html', {'types': enabled_types, 'possible_values':enabled_types})
+    return TemplateResponse(request, 'index.html', {'types': enabled_types, 'possible_values': enabled_types})
 
 
 def calculator(request):
