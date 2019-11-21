@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100 h-100">
+    <div class="w-100 h-100 overflow-hidden">
 
         <ValidationObserver
                 ref="observer"
@@ -9,7 +9,7 @@
             <form class="">
                 <div class="form-group">
                     <RadioButtonsList
-                            :label="'Исходное тип'"
+                            :label="'Исходный тип'"
                             :name="'input_type'"
                             :isRequired="true"
                             :PossibleValues="possible_values"

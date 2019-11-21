@@ -4,7 +4,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.template.response import TemplateResponse
 
-enabled_types = ['Тонна', 'Килограмм', 'Грамм', 'Милиграмм', 'Фунт']
+enabled_types = ['Тонна', 'Килограмм', 'Грамм', 'Милиграмм', 'Фунт', 'Карат', 'Гран', 'Центнер', 'Унция']
 
 
 def index(request):
@@ -18,10 +18,11 @@ def calculator(request):
     errors = {}
     has_errors = False
     if input_value is None:
-        errors.update({'input_value': 'Не задано значение вхожного значения'})  # TODO опечатки исправть
+        errors.update({'input_value': 'Не задано значение входного значения'})  # TODO опечатки исправть
         has_errors = True
+
     if input_type is None:
-        errors.update({'input_type': 'Не задано значение вхожного типа'})
+        errors.update({'input_type': 'Не задано значение входного типа'})
         has_errors = True
     if output_type is None:
         errors.update({'output_type': 'Не задано значение выходного типа'})
@@ -68,6 +69,14 @@ def toKG(type: str, val: float) -> float:
         return val / (1000 * 1000)
     if type == 'Фунт':
         return 0.453592 * val
+    if type == 'Карат':
+        return 0.0002 * val
+    if type == 'Гран':
+        return 0.0000647989 * val
+    if type == 'Центнер':
+        return val * 100
+    if type == 'Унция':
+        return 0.0283495 * val
 
 
 def fromKG(type: str, val: float) -> float:
@@ -85,3 +94,15 @@ def fromKG(type: str, val: float) -> float:
 
     if type == 'Фунт':
         return val / 0.453592
+
+    if type == 'Карат':
+        return 5000 * val
+
+    if type == 'Гран':
+        return 5432.355971358163 * val
+
+    if type == 'Центнер':
+        return val * 0.01
+
+    if type == 'Унция':
+        return 35.274 * val
