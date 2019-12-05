@@ -1,10 +1,9 @@
-from django.http import JsonResponse, HttpResponseBadRequest
-from django.shortcuts import render
+from typing import  KeysView, Dict
+
+from django.http import JsonResponse
 
 # Create your views here.
 from django.template.response import TemplateResponse
-
-#enabled_types = ['Тонна', 'Килограмм', 'Грамм', 'Милиграмм', 'Фунт', 'Карат', 'Гран', 'Центнер', 'Унция']
 
 mass_to_g = {
     'Тонна': 1000 * 1000,
@@ -19,16 +18,16 @@ mass_to_g = {
 }
 
 
-def index(request):
-    enabled_types = mass_to_g.keys()
+def index(request) -> TemplateResponse:
+    enabled_types: KeysView[str] = mass_to_g.keys()
     return TemplateResponse(request, 'index.html', {'types': enabled_types, 'possible_values': list(enabled_types)})
 
 
-def calculator(request):
+def calculator(request) -> JsonResponse:
     input_type: str = request.GET.get('input_type', None)
     output_type: str = request.GET.get('output_type', None)
     input_value: str = request.GET.get('input_value', None)
-    errors = {}
+    errors: Dict = {}
     has_errors = False
     if input_value is None:
         errors.update({'input_value': 'Не задано значение входного значения'})
@@ -41,7 +40,7 @@ def calculator(request):
         errors.update({'output_type': 'Не задано значение выходного типа'})
         has_errors = True
 
-    enabled_types = mass_to_g.keys()
+    enabled_types: KeysView[str] = mass_to_g.keys()
 
     if input_type not in enabled_types:
         errors.update({'input_type': 'Входной тип не валидный'})
@@ -51,7 +50,7 @@ def calculator(request):
         errors.update({'output_type': 'Выходной тип не валидный'})
         has_errors = True
 
-    result = convert(input_value, input_type, output_type)
+    result: float = convert(input_value, input_type, output_type)
     if has_errors:
         return JsonResponse({
             'valid': False,
@@ -74,8 +73,8 @@ def convert(input_value: str, input_type: str, output_type: str) -> float:
 
 
 def to_gram(type: str, val: float) -> float:
-    return val*mass_to_g[type]
+    return val * mass_to_g[type]
 
 
 def from_gram(type: str, val: float) -> float:
-    return val/mass_to_g[type]
+    return val / mass_to_g[type]
