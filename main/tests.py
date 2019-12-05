@@ -36,7 +36,7 @@ class CalculatorTest(SimpleTestCase):
                 self.assertEqual(val, new_val)
 
     def testResponses(self):
-        val = "10"
+        val = "150"
         client = Client()
         for type1 in self.enabled_types:
             for type2 in self.enabled_types:
@@ -44,8 +44,7 @@ class CalculatorTest(SimpleTestCase):
 
                 params = {'input_type': type1, 'output_type': type2, 'input_value': val}
 
-                response = client.get('/calc', params)
+                response = client.get('/calc/', params)
                 self.assertEquals(response.status_code, 200)
                 self.assertIsInstance(response, JsonResponse)
-                response2 = JsonResponse(response)
-                self.assertJSONEqual(response2.content, {'valid': True, 'output_value': res})
+                self.assertJSONEqual(response.content, {'valid': True, 'output_value': res})

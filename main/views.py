@@ -21,7 +21,7 @@ mass_to_g = {
 
 def index(request):
     enabled_types = mass_to_g.keys()
-    return TemplateResponse(request, 'index.html', {'types': enabled_types, 'possible_values': enabled_types})
+    return TemplateResponse(request, 'index.html', {'types': enabled_types, 'possible_values': list(enabled_types)})
 
 
 def calculator(request):
